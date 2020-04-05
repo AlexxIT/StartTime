@@ -7,11 +7,12 @@ from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.typing import HomeAssistantType
 
 _LOGGER = logging.getLogger(__name__)
+_LOGGER.info("Started tracking time")
 
 DOMAIN = 'start_time'
 
 
-class Handler(logging.Handler):
+class LogsHandler(logging.Handler):
     def __init__(self):
         super().__init__()
         self.add_entities = None
@@ -26,7 +27,7 @@ class Handler(logging.Handler):
             self.add_entities([StartTime(record.args[0], self.attrs)])
 
 
-handler = Handler()
+handler = LogsHandler()
 
 logging.getLogger('homeassistant.bootstrap').addHandler(handler)
 logging.getLogger('homeassistant.setup').addHandler(handler)

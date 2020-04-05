@@ -9,9 +9,10 @@ Create Start Time sensor for Home Assistant
 ## Config
 
 ```yaml
-sensor:
-- platform: start_time
+start_time:
 ```
+
+This component does not depend on the settings of the `logger` component!
 
 ## About
 
