@@ -11,28 +11,31 @@ _LOGGER = logging.getLogger(__name__)
 DOMAIN = 'start_time'
 
 
-async def async_setup_platform(hass: HomeAssistantType, config, add_entities,
-                               discovery_info=None):
-    handler = Handler(add_entities)
-
-    logging.getLogger('homeassistant.bootstrap').addHandler(handler)
-    logging.getLogger('homeassistant.setup').addHandler(handler)
-
-    return True
-
-
 class Handler(logging.Handler):
-    def __init__(self, add_entities):
+    def __init__(self):
         super().__init__()
-        self.add_entities = add_entities
+        self.add_entities = None
         self.attrs = {}
 
     def handle(self, record: LogRecord) -> None:
         if record.msg.startswith("Setup of domain"):
             self.attrs[record.args[0]] = round(record.args[1], 1)
 
-        elif record.msg.startswith("Home Assistant initialized"):
+        elif (record.msg.startswith("Home Assistant initialized") and
+              self.add_entities):
             self.add_entities([StartTime(record.args[0], self.attrs)])
+
+
+handler = Handler()
+
+logging.getLogger('homeassistant.bootstrap').addHandler(handler)
+logging.getLogger('homeassistant.setup').addHandler(handler)
+
+
+async def async_setup_platform(hass: HomeAssistantType, config, add_entities,
+                               discovery_info=None):
+    handler.add_entities = add_entities
+    return True
 
 
 class StartTime(Entity):
