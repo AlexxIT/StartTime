@@ -1,16 +1,12 @@
 from homeassistant.config_entries import ConfigEntry, SOURCE_IMPORT
 from homeassistant.helpers.typing import HomeAssistantType
 
-from .utils import LogsHandler
-
-DOMAIN = 'start_time'
-
-handler = LogsHandler()
-handler.add_logger('homeassistant.bootstrap')
-handler.add_logger('homeassistant.setup')
+from .sensor import DOMAIN, StartTime
 
 
 async def async_setup(hass: HomeAssistantType, hass_config: dict):
+    hass.data[DOMAIN] = StartTime()
+
     if DOMAIN in hass_config:
         hass.async_create_task(hass.config_entries.flow.async_init(
             DOMAIN, context={"source": SOURCE_IMPORT}
