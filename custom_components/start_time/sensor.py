@@ -25,7 +25,7 @@ class StartTime(Entity):
 
         def monkey_info(msg: str, *args):
             if msg.startswith("Home Assistant initialized"):
-                self.update(args[0])
+                self.internal_update(args[0])
 
             real_info(msg, *args)
 
@@ -59,7 +59,7 @@ class StartTime(Entity):
     def icon(self):
         return 'mdi:home-assistant'
 
-    def update(self, state):
+    def internal_update(self, state):
         setup_time: dict = self.hass.data.get('setup_time')
         if setup_time:
             self._attrs = {
