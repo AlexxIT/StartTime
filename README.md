@@ -8,6 +8,12 @@ Create Start Time sensor for Home Assistant
 
 ## Config
 
+From GUI:
+
+> Configuration > Integrations > Add Integration > **Start Time**
+
+or in YAML:
+
 ```yaml
 start_time:
 ```
