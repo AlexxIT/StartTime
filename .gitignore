@@ -1,2 +1,6 @@
 
-custom_components/start_time/__pycache__/
+__pycache__/
+
+.homeassistant/
+
+.idea/
