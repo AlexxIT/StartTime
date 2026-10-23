@@ -28,15 +28,20 @@ class StartTime(Entity):
         logger = logging.getLogger(name)
         real_info = logger.info
 
-        def monkey_info(msg: str, *args):
+        def monkey_info(msg, *args, **kwargs):
             # https://github.com/home-assistant/core/issues/112464
             try:
-                if msg.startswith("Home Assistant initialized"):
+                if (
+                    isinstance(msg, str)
+                    and msg.startswith("Home Assistant initialized")
+                    and args
+                ):
                     self.internal_update(args[0])
             except Exception as e:
                 _LOGGER.warning("update error", exc_info=e)
 
-            real_info(msg, *args)
+            kwargs["stacklevel"] = kwargs.get("stacklevel", 1) + 1
+            real_info(msg, *args, **kwargs)
 
         logger.info = monkey_info
 
