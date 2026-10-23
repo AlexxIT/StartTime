@@ -1,8 +1,9 @@
 import logging
 from datetime import timedelta
 
+from homeassistant.components.sensor import SensorDeviceClass, SensorEntity
+from homeassistant.const import UnitOfTime
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.entity import Entity
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -14,12 +15,13 @@ async def async_setup_entry(hass: HomeAssistant, entry, async_add_entities):
     async_add_entities([sensor])
 
 
-class StartTime(Entity):
+class StartTime(SensorEntity):
     def __init__(self):
         self._attr_icon = "mdi:home-assistant"
         self._attr_name = "Start Time"
         self._attr_should_poll = False
-        self._attr_unit_of_measurement = "seconds"
+        self._attr_device_class = SensorDeviceClass.DURATION
+        self._attr_native_unit_of_measurement = UnitOfTime.SECONDS
         self._attr_unique_id = DOMAIN
 
         self.add_logger("homeassistant.bootstrap")
@@ -60,6 +62,6 @@ class StartTime(Entity):
                 sorted(extra.items(), key=lambda kv: kv[1], reverse=True)
             )
 
-        self._attr_state = round(state, 2)
+        self._attr_native_value = round(state, 2)
 
         self.schedule_update_ha_state()

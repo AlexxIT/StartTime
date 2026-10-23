@@ -32,6 +32,8 @@ start_time:
 
 Home Assistant displays initialization time in INFO logs. The component shows the same time as a sensor.
 
+The sensor uses Home Assistant's duration device class with native seconds (`s`). Its unique ID and name remain unchanged, and integration setup times remain available as attributes.
+
 Useful for debugging performance of slow computers like Raspberry Pi.
 
 This component does not depend on the settings of the `logger` component!
